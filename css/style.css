@@ -1,0 +1,80 @@
+/* ================ */
+/* Basic */
+/* ================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+body {
+  line-height: 1.5;
+  font-family: regular;
+}
+html {
+  scroll-behavior: smooth;
+}
+button {
+  border: 0;
+}
+button:focus,
+input:focus,
+a:focus,
+i:focus {
+  outline: none;
+}
+a,
+a:hover {
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+/* ================ */
+/* Fonts */
+/* ================ */
+@font-face {
+  font-family: medium;
+  src: url("../fonts/EuclidCircularA-Medium.ttf");
+}
+@font-face {
+  font-family: regular;
+  src: url("../fonts/EuclidCircularA-Regular.ttf");
+}
+
+/* ================ */
+/* ADD BAZAR */
+/* ================ */
+#add-bazar-section h1 {
+  font-family: medium;
+  text-transform: uppercase;
+}
+.add-bazar-input {
+  width: 300px;
+}
+@media screen and (max-width: 400px) {
+  .add-bazar-input {
+    width: 220px;
+  }
+}
+
+/* ================ */
+/* BAZAR Items */
+/* ================ */
+.bazar-li {
+  flex: 1;
+  overflow-x: auto;
+}
+li::marker {
+  color: #ffffff;
+}
+.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
