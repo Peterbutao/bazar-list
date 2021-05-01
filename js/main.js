@@ -1,67 +1,73 @@
-// Selectors
-const addBazarInput = document.querySelector(".add-bazar-input");
-const addBazarBtn = document.querySelector(".add-bazar-btn");
-const bazarOl = document.querySelector(".bazar-ol");
+/* Selectors */
+const addBazarForm = document.querySelector('#add-bazar');
+const bazarOl = document.querySelector('.bazar-ol');
 
-// Event Listeners
-addBazarBtn.addEventListener("click", bazarItems);
+const bazarList = JSON.parse(localStorage.getItem('bazar')) || [];
 
-// Functions
-function bazarItems(event) {
-  // Prevent Default
-  event.preventDefault();
-  if (addBazarInput.value === "") {
-    alert("ADD BAZAR is required");
+// Set Localstorage and Display Bazar List
+function setLocalStorageANDDisplayBazarList() {
+  localStorage.setItem('bazar', JSON.stringify(bazarList));
+  displayBazarList(bazarList, bazarOl);
+}
+
+/* Functions */
+// Add Bazar
+function addBazar(e) {
+  e.preventDefault();
+
+  const bazarName = this.querySelector('input').value.trim();
+
+  if (!bazarName) {
+    alert('Add Bazar is required!');
   } else {
-    // Create Bazar Item
-    const bazarItem = document.createElement("div");
-    bazarItem.classList.add(
-      "bazar-item",
-      "bg-white",
-      "d-flex",
-      "justify-content-between",
-      "mt-3"
-    );
-    bazarOl.appendChild(bazarItem);
-    // Create Bazar Li
-    const bazarLi = document.createElement("li");
-    bazarLi.innerHTML = addBazarInput.value;
-    bazarLi.classList.add("bazar-li", "p-3");
-    bazarItem.appendChild(bazarLi);
-    // Create Bazar Complete Btn
-    const bazarCompleteBtn = document.createElement("button");
-    bazarCompleteBtn.innerHTML = "Complete";
-    bazarCompleteBtn.classList.add(
-      "bazar-complete-btn",
-      "p-3",
-      "bg-success",
-      "text-white"
-    );
-    bazarItem.appendChild(bazarCompleteBtn);
-    // Create Bazar Delete Btn
-    const bazarDeleteBtn = document.createElement("button");
-    bazarDeleteBtn.innerHTML = "Delete";
-    bazarDeleteBtn.classList.add(
-      "bazar-delete-btn",
-      "p-3",
-      "bg-danger",
-      "text-white"
-    );
-    bazarItem.appendChild(bazarDeleteBtn);
-    // Clear Add Bazar Input Value
-    addBazarInput.value = "";
-    // Complete and Delete Btn
-    bazarItem.addEventListener("click", completeDeleteFunc);
-    function completeDeleteFunc(event) {
-      const item = event.target;
-      if (item.classList[0] === "bazar-delete-btn") {
-        const bazarItem = item.parentElement;
-        bazarItem.remove();
-      }
-      if (item.classList[0] === "bazar-complete-btn") {
-        const bazarItem = item.parentElement;
-        bazarItem.classList.toggle("completed");
-      }
-    }
+    const bazar = {
+      bazarName,
+      isComplete: false,
+    };
+    bazarList.push(bazar);
+    // Set Localstorage and Display Bazar List
+    setLocalStorageANDDisplayBazarList();
+    // Reset Input
+    this.reset();
   }
 }
+
+// Display Bazar List
+function displayBazarList(bazarList, bazarOl) {
+  bazarOl.innerHTML = bazarList
+    .map((bazar, index) => {
+      return /* html */ `
+      <div  class="${
+        bazar.isComplete ? 'completed' : ''
+      } bazar-item bg-white d-flex justify-content-between mt-3" data-index="${index}">
+        <li class="bazar-li p-3">${bazar.bazarName}</li>
+        <button onclick="completeToggle(this)" class="bazar-complete-btn p-3 bg-success text-white">Complete</button
+        ><button onclick="deleteItem(${index})" class="bazar-delete-btn p-3 bg-danger text-white">Delete</button>
+      </div>
+    `;
+    })
+    .join('');
+}
+
+// Complete Item
+function completeToggle(self) {
+  const el = self.parentNode;
+  const index = el.dataset.index;
+  bazarList[index].isComplete = !bazarList[index].isComplete;
+  // Set Localstorage and Display Bazar List
+  setLocalStorageANDDisplayBazarList();
+}
+
+// Delete Item
+function deleteItem(index) {
+  bazarList.splice(index, 1);
+  displayBazarList(bazarList, bazarOl);
+  // Set Localstorage and Display Bazar List
+  setLocalStorageANDDisplayBazarList();
+}
+
+/* Event Listeners */
+addBazarForm.addEventListener('submit', addBazar);
+
+// Set Localstorage and Display Bazar List
+setLocalStorageANDDisplayBazarList();
