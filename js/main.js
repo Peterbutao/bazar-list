@@ -36,11 +36,18 @@ function addBazar(e) {
 function displayBazarList(bazarList, bazarOl) {
   bazarOl.innerHTML = bazarList
     .map((bazar, index) => {
+      const sl = index + 1;
+
       return /* html */ `
       <div  class="${
         bazar.isComplete ? 'completed' : ''
       } bazar-item bg-white d-flex justify-content-between mt-3" data-index="${index}">
-        <li class="bazar-li p-3">${bazar.bazarName}</li>
+        <li class="bazar-li p-3">
+        <span style="background:'red'">${
+          String(sl).length > 1 ? sl : '0' + sl
+        }-</span>
+         ${bazar.bazarName}
+        </li>
         <button onclick="completeToggle(this)" class="bazar-complete-btn p-3 bg-success text-white">Complete</button
         ><button onclick="deleteItem(${index})" class="bazar-delete-btn p-3 bg-danger text-white">Delete</button>
       </div>
