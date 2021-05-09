@@ -58,8 +58,8 @@ function displayBazarList(bazarList, bazarOl) {
 
 // Complete Item
 function completeToggle(self) {
-  const el = self.parentNode;
-  const index = el.dataset.index;
+  const parent = self.parentNode;
+  const index = parent.dataset.index;
   bazarList[index].isComplete = !bazarList[index].isComplete;
   // Set Localstorage and Display Bazar List
   setLocalStorageANDDisplayBazarList();
